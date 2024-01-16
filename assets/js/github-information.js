@@ -1,3 +1,23 @@
+// Function called when the promise resolves 
+// user is the object being returned from the GitHub API
+// ${user.html_url} is the users public profile on GitHub
+function userInformationHTML(user) { // (@ adds the sign before the username
+    return `
+        <h2>${user.name}
+            <span class="small-name">
+            (@<a href="${user.html_url}" target="_blank">${user.login}</a>)
+            </span>
+        </h2>
+        <div class="gh-content">
+            <div class="gh-avatar">
+                <a href="${user.html_url}" target="_blank">
+                    <img src="${user.avatar_url}" width="80" height="80" alt="${user.login}" />
+                </a>
+            </div>
+            <p>Followers: ${user.followers} - Following ${user.following} <br> Repos: ${user.public_repos}</p>
+        </div>`;
+}
+
 function fetchGitHubInformation(event) {
     // use jquery to select the ID
     var username = $("#gh-username").val();
