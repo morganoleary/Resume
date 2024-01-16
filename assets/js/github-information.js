@@ -23,7 +23,7 @@ function userInformationHTML(user) { // (@ adds the sign before the username
 function repoInformationHTML(repos) {
     // if array is empty and no repos for the user:
     if (repos.length == 0) {
-        return `<div class="clearfix repo-list">No repos!</div>`
+        return `<div class="clearfix repo-list">No repos!</div>`;
     }
     // if data has been returned, iterate through array to get data out of it
     // .map returns results of the function in an array format
@@ -39,12 +39,16 @@ function repoInformationHTML(repos) {
                     <strong>Repo List:</strong>
                 </p>
                 <ul>
-                    ${listItemsHTML.join("/n")}
+                    ${listItemsHTML.join("\n")}
                 </ul>
             </div>`;
 }
 
 function fetchGitHubInformation(event) {
+    //fix bug- gh-repo-data div not being cleared when theres an empty text box
+    $("#gh-user-data").html(""); // empty string empties the divs
+    $("#gh-repo-data").html("");
+
     // use jquery to select the ID
     var username = $("#gh-username").val();
     if (!username) { // if username field is empty
@@ -90,3 +94,7 @@ function fetchGitHubInformation(event) {
         }
     )
 }
+
+// Display a profile instead of just an empty div when page is loaded
+// executs the fetch function when the DOM is fully loaded (.ready function)
+$(document).ready(fetchGitHubInformation);
