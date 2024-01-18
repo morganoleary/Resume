@@ -85,6 +85,14 @@ function fetchGitHubInformation(event) {
             // if 404 (not found error), display this text in the div
             if (errorResponse.status === 404) {
                 $("#gh-user-data").html(`<h2>No info found for user ${username}</h2>`);
+            // fix throttling limit resctriction on GitHub API requests
+            // error 403 = forbidden
+            } else if(errorResponse.status === 403){
+                // get date stored in errorResponse header - provided by GitHub to let us know when quota will be reset
+                // Presented as UNIX time stamp - multiply by 1000 & turn into date object so we can read it
+                var resetTime = new Date(errorResponse.getResponseHeader('X-RateLimit-Reset') * 1000);
+                // toLocale... gets location from local browser to print local time
+                $("#gh-user-data").html(`<h4>Too many requests, please wait until ${resetTime.toLocaleTimeString()}</h4>`);
             } else {
                 console.log(errorResponse);
                 // get JSON response from the errorResponse variable
